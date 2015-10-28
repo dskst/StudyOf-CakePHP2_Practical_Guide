@@ -25,6 +25,20 @@
 // Setup a 'default' cache configuration for use in the application.
 Cache::config('default', array('engine' => 'File'));
 
+// Setup a session.
+Configure::write('Session', array(
+	// 'defaults' => 'php'
+	'defaults' => 'cake',
+	'cookie'   => 'SID',
+	'timeout'  => 180,
+	'ini' => array(
+		'session.cookie_lifetime' => 0,    // 秒 0 でブラウザを閉じるまで
+		'session.gc_maxlifetime'  =>10800, // 秒 操作なし時、sessionを削除するまでの時間(timeoutと同じ設定とした。※こちらは秒)
+		'session.gc_probability'  => 1,    // gcを起動する確率分子
+		'session.gc_divisor'      => 100,  // gcを起動する確率分母
+	),
+));
+
 /**
  * The settings below can be used to set additional paths to models, views and controllers.
  *
@@ -66,6 +80,7 @@ Cache::config('default', array('engine' => 'File'));
  * CakePlugin::loadAll(); // Loads all plugins at once
  * CakePlugin::load('DebugKit'); // Loads a single plugin named DebugKit
  */
+CakePlugin::load('DebugKit');
 
 /**
  * To prefer app translation over plugin translation, you can set
@@ -109,8 +124,3 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
-
-/**
- * Plugins load
- */
-CakePlugin::load('DebugKit');
