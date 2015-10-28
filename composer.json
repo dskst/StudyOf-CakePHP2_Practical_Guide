@@ -5,6 +5,9 @@
 	"keywords": ["framework"],
 	"homepage": "http://cakephp.org",
 	"license": "MIT",
+	"config": {
+		"vendor-dir": "vendors"
+	},
 	"authors": [
 		{
 			"name": "CakePHP Community",
@@ -25,6 +28,13 @@
 		"phpunit/phpunit": "3.7.*",
 		"cakephp/debug_kit" : "^2.2.0",
 		"cakephp/cakephp-codesniffer": "^1.0.0"
+	},
+	"extra": {
+		"installer-paths": {
+			"./plugins/{$name}/": [
+				"cakephp/debug_kit"
+			]
+		}
 	},
 	"bin": [
 		"lib/Cake/Console/cake"
