@@ -7,6 +7,7 @@ App::uses('AppModel', 'Model');
  */
 class Task extends AppModel
 {
+    public $hasMany = array('Note');
 
     /**
      * Validation rules
