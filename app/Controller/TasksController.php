@@ -33,22 +33,29 @@ class TasksController extends AppController
         $this->render('index');
     }
 
+    /**
+     * タスク登録処理
+     *
+     * @return void
+     */
     public function create()
     {
         // POSTされた場合だけ処理を行う
         if ($this->request->is('post')) {
             $data = array(
-                'name' => $this->request->data['name']
+                'name' => $this->request->data['name'],
+                'body' => $this->request->data['body'],
             );
 
             // データ登録
-            if ($this->Task->save($data)) {
-                $msg = sprintf('タスク %s を登録しました。', $this->Task->id);
-                $this->Flash->success(__($msg));
-            } else {
-                $this->Flash->error(__('タスクの登録に失敗しました。'));
+            if (!$this->Task->save($data)) {
+                $this->render('create');
+                return;
             }
 
+            // 登録成功
+            $msg = sprintf('タスク %s を登録しました。', $this->Task->id);
+            $this->Flash->success(__($msg));
             return $this->redirect(array('action' => 'index'));
         }
 
