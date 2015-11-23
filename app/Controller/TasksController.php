@@ -62,6 +62,40 @@ class TasksController extends AppController
         $this->render('create');
     }
 
+    public function edit($id = null)
+    {
+        $options = array(
+            'conditions' => array(
+                'Task.id' => $id,
+                'Task.status' => 0,
+            ),
+        );
+        $task = $this->Task->find('first', $options);
+
+        // データが見つからない場合は一覧へ
+        if ($task == false) {
+            $this->Flash->error(__('タスクが見つかりません。'));
+            return $this->redirect(array('action' => 'index'));
+        }
+
+        // フォームが送信された場合は更新
+        if ($this->request->is('post')) {
+            $data = array(
+                'id' => $id,
+                'name' => $this->request->data['Task']['name'],
+                'body' => $this->request->data['Task']['body'],
+            );
+
+            if ($this->Task->save($data)) {
+                $this->Flash->success(__('更新しました'));
+                $this->redirect(array('action' => 'index'));
+            }
+        } else {
+            // POSTされていない場合は初期データをフォームにセット
+            $this->request->data = $task;
+        }
+    }
+
     /**
      * タスク完了処理
      *
